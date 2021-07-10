@@ -4,8 +4,8 @@ import java.util.Iterator;
 import edu.princeton.cs.algs4.StdOut;
 
 public class Deque<Item> implements Iterable<Item> {
-	Node first, last;
-	int size;
+	private Node first, last;
+	private int size;
 
 	// construct an empty deque
 	public Deque() {
@@ -38,6 +38,7 @@ public class Deque<Item> implements Iterable<Item> {
 			first.previous = node;
 			first = node;
 		}
+		size++;
 
 	}
 
@@ -55,6 +56,7 @@ public class Deque<Item> implements Iterable<Item> {
 			last.next = node;
 			last = node;
 		}
+		size++;
 
 	}
 
@@ -69,7 +71,9 @@ public class Deque<Item> implements Iterable<Item> {
 			first = null;
 		} else {
 			first = first.next;
+			first.previous = null;
 		}
+		size--;
 		return temp;
 	}
 
@@ -78,13 +82,15 @@ public class Deque<Item> implements Iterable<Item> {
 		if (last == null) {
 			throw new java.util.NoSuchElementException();
 		}
-		Item temp = first.item;
+		Item temp = last.item;
 		if (first == last) {
 			last = null;
 			first = null;
 		} else {
 			last = last.previous;
+			last.next = null;
 		}
+		size--;
 		return temp;
 	}
 
@@ -94,7 +100,11 @@ public class Deque<Item> implements Iterable<Item> {
 	}
 
 	private class DequeIterator implements Iterator<Item> {
-		private Node current = first;
+		private Node current = null;
+		
+		public DequeIterator() {
+			current = first;
+		}
 
 		public boolean hasNext() {
 			return current != null;
@@ -147,9 +157,5 @@ public class Deque<Item> implements Iterable<Item> {
 		queue.removeLast();
 		StdOut.println("remove last");
 		StdOut.println("last == salut "+(queue.last.item == "salut"));
-		
-		
-		// StdOut.println("testing it");
-		System.out.println("test");
 	}
 }
